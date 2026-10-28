@@ -29,12 +29,12 @@ ALFABETO = {
     "W": "ya",
     "X": "xe",
     "Y": "do",
-    "Z": "shi",
+    "Z": "z",  # La regla de reemplazo convierte esta pieza en 0.
 }
 
 
 def normalizar_letra(letra):
-    """Convierte una vocal acentuada a su forma base; conserva la Ñ."""
+    """Convierte vocales acentuadas a su forma base; conserva la Ñ."""
     letra = letra.upper()
     if letra == "Ñ":
         return "Ñ"

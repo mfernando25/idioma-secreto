@@ -1,17 +1,19 @@
-"""Regla de transformación sugerida por una estudiante: sustituir Z por 0."""
+"""Ejemplo de transformación: si una pieza es Z, sustituirla por 0."""
 
 ACTIVA = True
 TIPO = "transformacion"
 ORDEN = 20
 
-LETRA_ORIGEN = "z"
+PIEZA_ORIGEN = "z"
 REEMPLAZO = "0"
 
 
 def aplicar(piezas, palabra_original):
-    """Reemplaza la letra configurada dentro de cada pieza traducida."""
-    origen = LETRA_ORIGEN
-    return [
-        pieza.replace(origen.lower(), REEMPLAZO).replace(origen.upper(), REEMPLAZO)
-        for pieza in piezas
-    ]
+    """Cambia la pieza completa z por 0, sin alterar sílabas como 'zu'."""
+    resultado = []
+    for pieza in piezas:
+        if pieza.casefold() == PIEZA_ORIGEN.casefold():
+            resultado.append(REEMPLAZO)
+        else:
+            resultado.append(pieza)
+    return resultado

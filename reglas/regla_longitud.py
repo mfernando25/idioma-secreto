@@ -1,15 +1,17 @@
-"""Regla de validación: limitar los caracteres del resultado secreto."""
+"""Ejemplo de validación: limitar la longitud de la palabra secreta."""
 
 ACTIVA = True
 TIPO = "validacion"
 ORDEN = 20
 
 MIN_CARACTERES = 1
-MAX_CARACTERES = 12
+# El alfabeto usa piezas de dos o tres caracteres y el prefijo añade dos.
+# Este valor permite traducir muchas palabras habituales; ajústalo para tu idioma.
+MAX_CARACTERES = 20
 
 
 def validar(piezas, palabra_original):
-    """Comprueba que el resultado respete los límites configurados."""
+    """Devuelve None si la longitud cumple el límite o explica el error."""
     palabra_secreta = "".join(piezas)
     longitud = len(palabra_secreta)
 

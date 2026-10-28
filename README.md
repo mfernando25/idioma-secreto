@@ -1,54 +1,52 @@
-# Creador de idioma secreto — versión 2
+# Creador de idioma secreto — versión 3
 
-Programa didáctico en Python que traduce palabras y frases a través de un alfabeto editable y un conjunto de reglas modulares detectadas automáticamente. Solo utiliza la biblioteca estándar de Python; no necesita instalar paquetes adicionales.
+Programa didáctico en Python para traducir palabras y frases mediante un alfabeto editable y reglas modulares. No necesita instalar paquetes adicionales.
 
-## Ejecutar el programa
+## Ejecutar
 
-Abre una terminal dentro de la carpeta del proyecto y ejecuta:
+Desde la carpeta del proyecto:
 
-```bash
+\`\`\`bash
 python main.py
-```
+\`\`\`
 
-En algunos equipos Windows también puedes usar `py main.py`.
+En Windows también puedes usar \`py main.py\`.
 
 ## Menú
 
-1. **Traducir una palabra:** traduce y guarda la pareja original/traducción en el diccionario local.
-2. **Traducir una frase:** aplica el mismo proceso a cada palabra, conserva espacios y puntuación y muestra el resultado sin guardar la frase.
-3. **Mostrar diccionario:** consulta las traducciones guardadas durante ejecuciones anteriores en ese equipo.
+1. **Traducir una palabra:** aplica las reglas y guarda la pareja original/traducción en el diccionario local.
+2. **Traducir una frase:** aplica las mismas reglas, conserva espacios y puntuación y no guarda la frase.
+3. **Mostrar diccionario:** consulta las traducciones guardadas en este equipo.
 4. **Salir.**
 
 ## Archivos principales
 
-- `main.py`: menú principal.
-- `alfabeto.py`: equivalencias editables entre letras y piezas secretas.
-- `traductor.py`: traduce las palabras, detecta los módulos de reglas y los ejecuta.
-- `diccionario.py`: carga y guarda las traducciones en JSON.
-- `reglas/`: cada archivo `regla_*.py` contiene una regla, sus parámetros, si está activa y su orden.
-- `GUIA_REGLAS_PARA_ESTUDIANTES.md`: ideas de reglas agrupadas a partir de las propuestas del aula, con conteos y ejemplos de uso.
-- `datos/diccionario.json`: se crea localmente y conserva las traducciones.
+- \`main.py\`: menú.
+- \`alfabeto.py\`: equivalencias entre letras y piezas secretas.
+- \`traductor.py\`: proceso de traducción y detección automática de reglas.
+- \`diccionario.py\`: almacenamiento JSON persistente.
+- \`reglas/\`: tres reglas de ejemplo que el traductor detecta automáticamente.
+- \`plantillas/\`: tres ejercicios incompletos para que los estudiantes creen reglas nuevas.
+- \`GUIA_REGLAS_PARA_ESTUDIANTES.md\`: ideas de reglas agrupadas a partir de las propuestas del aula.
 
-## Reglas incluidas
+## Tres reglas de ejemplo incluidas
 
-- `reglas/regla_prefijo.py`: añade el prefijo configurado. Está activa al inicio.
-- `reglas/regla_reemplazar_z.py`: reemplaza `Z` o `z` por `0` dentro de las piezas. Está activa al inicio.
-- `reglas/regla_repeticiones.py`: evita repetir piezas en cualquier posición o solo consecutivamente, según `MODO`. Está desactivada inicialmente para no rechazar palabras comunes.
-- `reglas/regla_longitud.py`: limita la longitud de la palabra secreta, con mínimo y máximo configurables. El máximo inicial es 12 caracteres.
-- `reglas/regla_vocal.py`: exige al menos una vocal en la palabra secreta.
+- \`reglas/regla_prefijo.py\`: añade el prefijo propuesto por un estudiante. Se puede cambiar o desactivar.
+- \`reglas/regla_reemplazar_z.py\`: cambia una pieza que sea exactamente \`z\` por \`0\`. No altera una sílaba como \`zu\`. En el alfabeto inicial, la letra original Z se convierte en la pieza \`z\`, así que la regla transforma esa pieza en \`0\`.
+- \`reglas/regla_longitud.py\`: valida el mínimo y máximo de caracteres de la palabra secreta. El máximo inicial es 20 y se puede ajustar.
 
-## Cómo agregar una regla
+## Crear una regla nueva
 
-1. Crea un archivo dentro de `reglas/`; su nombre debe comenzar con `regla_`, por ejemplo `regla_sufijo.py`.
-2. Define `ACTIVA = True` o `False`, `TIPO = "transformacion"` o `"validacion"` y un `ORDEN` entero.
-3. Para una transformación, crea `aplicar(piezas, palabra_original)`, que debe devolver una lista de piezas.
-4. Para una validación, crea `validar(piezas, palabra_original)`, que debe devolver `None` si la palabra es válida o un mensaje de error si no lo es.
-5. Guarda el archivo y reinicia el programa. El traductor detectará la nueva regla automáticamente.
+1. Abre una plantilla de \`plantillas/\` o crea un archivo directamente dentro de \`reglas/\`.
+2. El archivo debe comenzar con \`regla_\`, declarar \`ACTIVA\` y \`TIPO\`, e incluir la función adecuada.
+3. Las transformaciones usan \`aplicar(piezas, palabra_original)\` y devuelven una lista de piezas.
+4. Las validaciones usan \`validar(piezas, palabra_original)\`: devuelven \`None\` si la palabra cumple la regla o un mensaje de error si no la cumple.
+5. Guarda el archivo y vuelve a ejecutar el programa. El traductor lo detectará; no necesitas modificar \`main.py\`, \`traductor.py\` ni \`diccionario.py\`.
 
-Las transformaciones se ejecutan primero, en orden numérico. Después se ejecutan las validaciones, también en orden numérico. Una validación que devuelva un mensaje de error hace que la palabra sea rechazada y no se registre.
+\`ORDEN\` es opcional. Si no aparece, el traductor usa 50. Las transformaciones se ejecutan primero y luego las validaciones; dentro de cada fase, las reglas se ordenan por número ascendente.
 
-Consulta `GUIA_REGLAS_PARA_ESTUDIANTES.md` para plantillas y más ideas.
+**Importante:** los archivos de \`plantillas/\` son ejercicios incompletos y no se cargan automáticamente. Copia uno a \`reglas/\`, cambia su nombre para que empiece por \`regla_\`, completa el código y cambia \`ACTIVA = False\` a \`True\` cuando esté listo.
 
 ## Persistencia
 
-Las traducciones se guardan en `datos/diccionario.json` y permanecen disponibles al cerrar y volver a ejecutar el programa en el mismo equipo. Ese archivo se excluye de Git para que los datos locales no se suban al repositorio.
+Las traducciones se guardan en \`datos/diccionario.json\` y se conservan al cerrar y volver a ejecutar el programa en el mismo equipo. El archivo real se excluye de Git para no subir los datos locales.
