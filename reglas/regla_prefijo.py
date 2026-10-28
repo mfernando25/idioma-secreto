@@ -1,6 +1,13 @@
-"""Regla de transformación: añadir una pieza al inicio."""
+"""Regla de transformación: añadir un prefijo."""
+
+ACTIVA = True
+TIPO = "transformacion"
+ORDEN = 10
+
+# Cambia esta pieza para definir el comienzo del idioma secreto.
+PREFIJO = "pe"
 
 
-def aplicar(piezas, prefijo):
-    """Devuelve una nueva lista con el prefijo delante de las piezas."""
-    return [prefijo] + piezas
+def aplicar(piezas, palabra_original):
+    """Devuelve las piezas con el prefijo al comienzo."""
+    return [PREFIJO] + piezas
