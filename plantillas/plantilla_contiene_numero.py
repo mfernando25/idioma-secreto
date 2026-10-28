@@ -16,9 +16,8 @@ def validar(piezas, palabra_original):
     for caracter in palabra_secreta:
         # RETO: comprueba si el carácter es un dígito.
         # Si lo es, actualiza contiene_numero.
-
         pass
 
     # RETO: si no hay ningún dígito, devuelve un mensaje de error.
     # Si hay uno o más, devuelve None.
-    return None
+    raise NotImplementedError("Completa la regla que exige un número.")
