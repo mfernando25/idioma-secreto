@@ -1,14 +1,23 @@
-"""Regla de validación: limitar la longitud de la traducción."""
+"""Regla de validación: limitar los caracteres del resultado secreto."""
+
+ACTIVA = True
+TIPO = "validacion"
+ORDEN = 20
+
+MIN_CARACTERES = 1
+MAX_CARACTERES = 12
 
 
-def validar(palabra_original, piezas, maximo_por_letra):
-    """Comprueba que la traducción no supere el límite configurado."""
+def validar(piezas, palabra_original):
+    """Comprueba que el resultado respete los límites configurados."""
     palabra_secreta = "".join(piezas)
-    longitud_maxima = len(palabra_original) * maximo_por_letra
-    if len(palabra_secreta) > longitud_maxima:
+    longitud = len(palabra_secreta)
+
+    if longitud < MIN_CARACTERES:
+        return f"la traducción necesita al menos {MIN_CARACTERES} caracteres."
+    if longitud > MAX_CARACTERES:
         return (
-            False,
-            f"la traducción tiene {len(palabra_secreta)} caracteres y "
-            f"el máximo permitido es {longitud_maxima}.",
+            f"la traducción tiene {longitud} caracteres; el máximo permitido "
+            f"es {MAX_CARACTERES}."
         )
-    return True, ""
+    return None
