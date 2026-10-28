@@ -1,8 +1,7 @@
-"""Traducción común y detección automática de reglas.
+"""Traducción y detección automática de reglas didácticas.
 
-Para añadir una regla nueva, basta con crear reglas/regla_nombre.py siguiendo
-el formato documentado en GUIA_REGLAS_PARA_ESTUDIANTES.md. No hay que editar
-este archivo cada vez que se añade una regla.
+Para añadir una regla, crea un archivo regla_*.py dentro de reglas/.
+No necesitas editar este archivo ni el menú.
 """
 
 import importlib
@@ -12,10 +11,11 @@ import reglas
 from alfabeto import ALFABETO, normalizar_letra
 
 TIPOS_DE_REGLA = ("transformacion", "validacion")
+ORDEN_PREDETERMINADO = 50
 
 
 def descubrir_reglas():
-    """Encuentra los archivos regla_*.py y los ordena por fase y ORDEN."""
+    """Encuentra reglas y las ordena por fase y orden."""
     modulos = []
 
     for informacion in pkgutil.iter_modules(reglas.__path__):
@@ -32,19 +32,22 @@ def descubrir_reglas():
 
         if not hasattr(modulo, "ACTIVA") or not isinstance(modulo.ACTIVA, bool):
             raise ValueError(
-                f"{informacion.name}.py necesita una variable ACTIVA = True o False."
+                f"{informacion.name}.py necesita ACTIVA = True o False."
             )
 
         tipo = getattr(modulo, "TIPO", None)
         if tipo not in TIPOS_DE_REGLA:
             raise ValueError(
-                f"{informacion.name}.py debe tener TIPO = 'transformacion' "
-                "o TIPO = 'validacion'."
+                f"{informacion.name}.py necesita TIPO = "
+                "'transformacion' o 'validacion'."
             )
 
-        orden = getattr(modulo, "ORDEN", None)
+        # ORDEN es opcional. Si no se indica, usamos 50.
+        orden = getattr(modulo, "ORDEN", ORDEN_PREDETERMINADO)
         if not isinstance(orden, int):
-            raise ValueError(f"{informacion.name}.py necesita un ORDEN entero.")
+            raise ValueError(
+                f"En {informacion.name}.py, ORDEN debe ser un número entero."
+            )
 
         funcion = "aplicar" if tipo == "transformacion" else "validar"
         if not callable(getattr(modulo, funcion, None)):
@@ -52,7 +55,7 @@ def descubrir_reglas():
                 f"{informacion.name}.py necesita la función {funcion}()."
             )
 
-        # Todas las transformaciones se ejecutan antes que las validaciones.
+        # Las transformaciones siempre van antes que las validaciones.
         fase = 0 if tipo == "transformacion" else 1
         modulos.append((fase, orden, informacion.name, modulo))
 
@@ -61,7 +64,7 @@ def descubrir_reglas():
 
 
 def convertir_a_piezas(palabra):
-    """Convierte cada letra original en una pieza de nuestro alfabeto."""
+    """Convierte las letras originales en las piezas de nuestro alfabeto."""
     piezas = []
 
     for letra in palabra:
@@ -81,7 +84,7 @@ def convertir_a_piezas(palabra):
 
 
 def traducir_palabra(palabra):
-    """Devuelve (traducción, error) sin guardar la palabra en el diccionario."""
+    """Devuelve (traducción, error); no guarda datos en el diccionario."""
     palabra = palabra.strip()
     if not palabra:
         return None, "la palabra no puede estar vacía."
@@ -91,15 +94,14 @@ def traducir_palabra(palabra):
         return None, error
 
     try:
-        modulos = descubrir_reglas()
-        for modulo in modulos:
+        for modulo in descubrir_reglas():
             if not modulo.ACTIVA:
                 continue
 
             nombre_regla = modulo.__name__.split(".")[-1]
+
             if modulo.TIPO == "transformacion":
-                # Una transformación recibe una lista de piezas y devuelve
-                # otra lista. Le pasamos una copia para evitar cambios ocultos.
+                # Las transformaciones reciben y devuelven listas de piezas.
                 nuevas_piezas = modulo.aplicar(list(piezas), palabra)
                 if not isinstance(nuevas_piezas, list) or not all(
                     isinstance(pieza, str) for pieza in nuevas_piezas
@@ -110,11 +112,16 @@ def traducir_palabra(palabra):
                     )
                 piezas = nuevas_piezas
             else:
-                # Una validación devuelve None si la palabra es válida o un
-                # mensaje de texto si debe rechazarse.
+                # Las validaciones devuelven None o un mensaje de error.
                 mensaje = modulo.validar(list(piezas), palabra)
-                if mensaje:
-                    return None, f"{nombre_regla}: {mensaje}"
+                if mensaje is not None:
+                    if not isinstance(mensaje, str):
+                        return None, (
+                            f"{nombre_regla}: validar() debe devolver None "
+                            "o un mensaje de texto."
+                        )
+                    if mensaje:
+                        return None, f"{nombre_regla}: {mensaje}"
 
     except Exception as error_regla:
         return None, f"Error en una regla: {error_regla}"
@@ -123,22 +130,18 @@ def traducir_palabra(palabra):
 
 
 def traducir_frase(frase):
-    """Traduce cada palabra y conserva espacios y signos de puntuación.
-
-    Si una palabra no supera una validación, se conserva en el texto original
-    y se devuelve su motivo en una lista de errores. La frase no se guarda.
-    """
+    """Traduce cada palabra; conserva espacios y signos de puntuación."""
     import re
 
     errores = []
     patron_palabras = r"[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+"
 
     def reemplazar_palabra(coincidencia):
-        palabra_original = coincidencia.group(0)
-        traduccion, error = traducir_palabra(palabra_original)
+        original = coincidencia.group(0)
+        traduccion, error = traducir_palabra(original)
         if error:
-            errores.append((palabra_original, error))
-            return palabra_original
+            errores.append((original, error))
+            return original
         return traduccion
 
     return re.sub(patron_palabras, reemplazar_palabra, frase), errores
