@@ -14,5 +14,4 @@ def validar(piezas, palabra_original):
     # Pista: puedes usar un bucle para cada pieza y otro para las siguientes.
     # Si encuentras una repetición, devuelve un mensaje de error.
     # Si no hay ninguna, devuelve None.
-
-    return None
+    raise NotImplementedError("Completa la regla que evita piezas repetidas.")
