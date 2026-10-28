@@ -1,11 +1,11 @@
-"""Regla de transformación: añadir un prefijo."""
+"""Ejemplo de transformación basada en la propuesta de comenzar con PE."""
 
 ACTIVA = True
 TIPO = "transformacion"
 ORDEN = 10
 
-# Cambia esta pieza para definir el comienzo del idioma secreto.
-PREFIJO = "pe"
+# Cambia el prefijo si tu grupo ha elegido otro.
+PREFIJO = "PE"
 
 
 def aplicar(piezas, palabra_original):
