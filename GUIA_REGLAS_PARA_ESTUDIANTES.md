@@ -1,114 +1,97 @@
 # Guía de inspiración: reglas para el idioma secreto
 
-Esta guía reúne ideas que surgieron en las propuestas del aula y las agrupa para evitar repetir reglas parecidas. Los ejemplos son opciones para inspirarse: **no hay que activar todas las reglas al mismo tiempo**.
+Esta guía reúne ideas de las propuestas del aula y las agrupa cuando varias sugerencias describen una regla parecida. No es necesario activar o implementar todas. La idea es elegir una propuesta, diseñar su lógica, programarla y probar cómo interactúa con otras reglas.
 
-El número indica cuántos estudiantes propusieron esa idea o una variante cercana. Como cada estudiante entregó varias ideas, los conteos de distintas filas se superponen.
+**Sobre los conteos:** el número indica cuántos estudiantes propusieron esa regla o ideas cercanas, agrupadas por tema. Un mismo estudiante pudo sugerir más de una regla, por lo que los conteos de distintas filas se superponen.
 
-## 1. Cinco reglas iniciales de la versión 2
+## 1. Tres reglas de ejemplo ya implementadas
 
-| Regla propuesta | N.º de estudiantes | Posible uso |
-|---|---:|---|
-| Evitar piezas repetidas dentro de una palabra | 4 | Impedir que una misma pieza o sílaba aparezca más de una vez, o limitar la regla solo a piezas consecutivas. |
-| Limitar la longitud de la traducción | 7 | Definir un mínimo y un máximo de caracteres permitidos en la palabra secreta. |
-| Exigir al menos una vocal | 1 | Rechazar palabras secretas que no contengan ninguna vocal. |
-| Reemplazar Z por 0 | 1 | Cambiar la letra `Z` por el número `0` en las piezas resultantes. |
-| Exigir un prefijo | 5 | Hacer que la palabra secreta comience con una pieza definida, por ejemplo `PE`, `war`, `bh`, `kx` o, bajo una condición, `uo`. |
-
-Estas cinco reglas ya tienen módulos en la versión 2. La regla de repetición está desactivada inicialmente porque puede rechazar palabras corrientes; se puede activar en `reglas/regla_repeticiones.py`. Los parámetros y la activación de cada regla están dentro de su propio archivo.
-
-## 2. Otras reglas sencillas que se pueden agregar
-
-Las siguientes propuestas también encajan en el esquema del proyecto: procesar las piezas de una palabra, transformarlas y validar el resultado. Algunas reglas se solapan porque pueden ser variantes de la misma idea.
+Estas reglas funcionan en el programa y permiten estudiar cómo se estructura un módulo.
 
 | Regla propuesta | N.º de estudiantes | Posible uso |
 |---|---:|---|
-| Añadir o exigir una terminación | 10 | Agregar una pieza al final o exigir que la palabra termine en una secuencia, vocal, número o signo de puntuación. |
-| Controlar la cantidad de piezas o sílabas | 4 | Establecer el mínimo, máximo o número exacto de piezas; por ejemplo, exigir exactamente tres. |
-| Exigir que la palabra contenga un número | 2 | Rechazar una traducción si no aparece al menos un dígito. |
-| Prohibir o eliminar números | 3 | Hacer que las palabras secretas no contengan dígitos o quitarlos durante la transformación. |
-| Prohibir dos números consecutivos | 1 | Rechazar resultados que contengan secuencias como `44` o `09`. |
-| Convertir un número en una pieza del idioma | 1 | Sustituir un dígito por una sílaba definida en un pequeño diccionario. |
-| Controlar caracteres repetidos | 7 | Limitar repeticiones o comprimirlas; por ejemplo, reducir vocales duplicadas o evitar tres consonantes seguidas. |
-| Sustituir letras, números o secuencias | 8 | Aplicar cambios definidos, como `g` por `2o1a`, `Z` por `0` o una secuencia concreta por otra. |
-| Exigir o prohibir una pieza o secuencia | 5 | Exigir que aparezca una secuencia, prohibir `gaa` o rechazar una palabra que contenga una combinación elegida. |
-| Limitar los caracteres permitidos | 5 | Aceptar solo letras, solo números o una combinación elegida; también se puede permitir o eliminar símbolos. |
-| Controlar mayúsculas y minúsculas | 6 | Convertir toda la salida a mayúsculas, capitalizar el comienzo o aplicar un formato de letras repetidas. |
-| Limitar la cantidad o proporción de vocales | 4 | Definir un máximo de vocales o exigir que representen un porcentaje de la palabra. |
-| Terminar en una vocal | 3 | Exigir que la palabra secreta termine en una vocal o en una vocal abierta. |
-| Exigir vocales distintas | 1 | Rechazar palabras que repitan una vocal cuando se exige variedad. |
-| Evitar la misma vocal en piezas consecutivas | 1 | Comprobar la vocal de piezas vecinas y rechazar una repetición del patrón. |
+| Exigir un prefijo al comienzo | 5 | Hacer que la palabra secreta empiece con una pieza definida, como \`PE\`, \`war\`, \`bh\` o \`kx\`. |
+| Reemplazar la pieza Z por 0 | 1 | Cambiar una pieza que sea exactamente \`z\` por el número \`0\`, sin modificar sílabas como \`zu\`. |
+| Limitar la longitud de la traducción | 7 | Definir el mínimo y el máximo de caracteres que puede tener la palabra secreta. |
+
+Están en \`reglas/\`. Se pueden modificar sus parámetros o desactivar con \`ACTIVA = False\`.
+
+## 2. Tres plantillas incompletas para practicar
+
+Las plantillas están en \`plantillas/\`. **No contienen la solución completa y no se ejecutan automáticamente.** Sirven como punto de partida para que el estudiante implemente la lógica.
+
+| Regla propuesta | N.º de estudiantes | Posible uso |
+|---|---:|---|
+| Terminar la palabra secreta con un número | 10 (ideas cercanas sobre terminaciones) | Añadir un número al final para establecer una forma constante de las palabras. Plantilla: \`plantilla_terminar_numero.py\`. |
+| Exigir que la palabra secreta contenga un número | 2 | Rechazar una traducción si no tiene ningún dígito. Plantilla: \`plantilla_contiene_numero.py\`. |
+| Prohibir que una pieza se repita en la misma palabra | 4 | Evitar que una misma sílaba o pieza aparezca más de una vez. Plantilla: \`plantilla_no_repetir_piezas.py\`. |
+
+Para usarlas:
+
+1. Copia la plantilla elegida a la carpeta \`reglas/\`.
+2. Cambia el nombre para que empiece por \`regla_\`, por ejemplo, \`regla_terminar_numero.py\`.
+3. Completa las partes marcadas con \`RETO\`.
+4. Cambia \`ACTIVA = False\` a \`ACTIVA = True\` cuando la regla esté implementada.
+5. Ejecuta el programa y prueba un caso que cumpla la regla y otro que no.
+
+## 3. Otras reglas propuestas para analizar y programar
+
+Estas ideas se incluyen para inspirar el trabajo de los estudiantes. No se proporciona una plantilla con la solución: el grupo debe decidir cómo implementarlas dentro del esquema común.
+
+| Regla propuesta | N.º de estudiantes | Posible uso |
+|---|---:|---|
+| Exigir al menos una vocal | 1 | Rechazar palabras secretas sin vocales. Considerar si otra regla ya garantiza una vocal. |
+| Prohibir dos números consecutivos | 1 | Evitar secuencias como \`44\` o \`09\`. |
+| Convertir un número en una pieza del idioma | 1 | Sustituir un dígito por una sílaba elegida en un pequeño diccionario. |
+| Prohibir números o eliminarlos | 3 | Rechazar resultados que contienen dígitos o quitarlos durante la transformación. |
+| Controlar repeticiones de caracteres | 7 | Limitar caracteres repetidos, reducir vocales duplicadas o evitar tres consonantes seguidas. |
+| Sustituir letras, números o secuencias | 8 | Aplicar cambios definidos, por ejemplo, sustituir una letra o una combinación concreta por otra. |
+| Exigir o prohibir una pieza o secuencia | 5 | Exigir que aparezca una secuencia o prohibir una combinación como \`gaa\`. |
+| Limitar los caracteres permitidos | 5 | Aceptar solo letras, solo números o un tipo de combinación; permitir o eliminar símbolos. |
+| Controlar mayúsculas y minúsculas | 6 | Convertir la salida a mayúsculas, cambiar el inicio o aplicar un formato definido. |
+| Limitar el número o la proporción de vocales | 4 | Definir un máximo de vocales o exigir que sean un porcentaje de la palabra. |
+| Terminar en una vocal | 3 | Exigir que la palabra secreta termine en una vocal. |
+| Exigir vocales distintas | 1 | Rechazar palabras que repiten una vocal cuando se requiere variedad. |
+| Evitar la misma vocal en piezas consecutivas | 1 | Comparar las vocales de piezas vecinas y evitar una repetición del patrón. |
 | Exigir longitud par | 2 | Aceptar solo palabras secretas con un número par de caracteres. |
-| Invertir palabras largas | 1 | Invertir la traducción cuando supere una longitud definida, por ejemplo seis caracteres. |
-| Eliminar caracteres o secuencias concretas | 4 | Retirar un guion, un símbolo o una secuencia como `uo` o `89`. |
+| Invertir palabras largas | 1 | Invertir el resultado cuando supera una longitud elegida. |
+| Eliminar caracteres o secuencias concretas | 4 | Retirar un guion, un símbolo o una secuencia como \`uo\` o \`89\`. |
 | Modificar una posición específica | 4 | Insertar, duplicar o reemplazar una pieza en una posición acordada, como la tercera. |
 | Comparar la primera y la última pieza | 2 | Exigir que sean diferentes o que ambas comiencen con la misma letra. |
-| Evitar choques entre piezas vecinas | 1 | Impedir que el último carácter de una pieza sea igual al primero de la siguiente. |
+| Evitar coincidencias entre piezas vecinas | 1 | Impedir que el último carácter de una pieza coincida con el primero de la siguiente. |
 | Exigir piezas de determinadas longitudes | 1 | Requerir, por ejemplo, una pieza de dos caracteres y otra de tres o más. |
-| Limitar consonantes consecutivas | 1 | Rechazar palabras que tengan tres consonantes seguidas. |
-| Evitar entradas duplicadas en el diccionario | 2 | Impedir registros repetidos; actualmente, el diccionario ya actualiza la entrada de una misma palabra original en vez de crear otra por mayúsculas/minúsculas. |
+| Controlar consonantes consecutivas | 1 | Rechazar palabras con tres consonantes seguidas. |
+| Evitar entradas duplicadas en el diccionario | 2 | Evitar registros repetidos; el diccionario actualiza la entrada de una misma palabra ignorando diferencias de mayúsculas/minúsculas. |
 
-## 3. Ideas que conviene dejar para otra etapa
+## 4. Ideas para una etapa posterior
 
-Estas propuestas no son imposibles, pero no las recomiendo como primeras reglas porque trabajan con una frase completa, dependen de la posición de varias palabras o requieren diseñar un sistema de generación gramatical:
+Estas propuestas trabajan sobre una frase completa o requieren comparar varias palabras. Es preferible abordarlas después de dominar las reglas de una sola palabra:
 
-- Barajar o invertir cada palabra según su posición par en una frase.
-- Unir todas las palabras de una frase, eliminar todos los espacios y luego invertir el texto completo.
-- Insertar una palabra cada dos palabras de la frase.
-- Crear palabras palíndromas mediante producciones simétricas o controlar globalmente las repeticiones de símbolos de una gramática.
+- Barajar o invertir cada palabra según su posición par dentro de una frase.
+- Unir todas las palabras, eliminar los espacios e invertir la frase completa.
+- Insertar una palabra adicional cada dos palabras de una frase.
+- Crear palabras palíndromas con producciones simétricas o limitar globalmente la repetición de símbolos.
 
-Para empezar, conviene que cada regla afecte a **una palabra traducida**. Más adelante se puede diseñar un segundo tipo de regla que opere sobre frases completas.
+## 5. Cómo funciona la estructura de una regla
 
-## 4. Cómo incorporar una nueva regla en la versión 2
+Los módulos se colocan dentro de \`reglas/\` y deben seguir una forma común:
 
-1. Crea un archivo dentro de `reglas/` cuyo nombre empiece por `regla_`, por ejemplo `regla_sufijo.py`.
-2. Define en ese mismo archivo `ACTIVA`, `TIPO` y `ORDEN`, además de sus parámetros.
-3. Si transforma la palabra, implementa `aplicar(piezas, palabra_original)` y devuelve la nueva lista de piezas.
-4. Si comprueba una condición, implementa `validar(piezas, palabra_original)`: devuelve `None` si es válida o un mensaje de error si debe rechazarse.
-5. Guarda el archivo y reinicia `python main.py`. El traductor detecta automáticamente el nuevo módulo; no hace falta modificar `traductor.py`, `main.py` ni `diccionario.py`.
+- \`ACTIVA\`: \`True\` si se ejecuta, \`False\` si se ignora.
+- \`TIPO\`: \`"transformacion"\` si modifica las piezas o \`"validacion"\` si comprueba una condición.
+- \`ORDEN\`: opcional; si no se define, se usa el valor 50.
+- Una transformación implementa \`aplicar(piezas, palabra_original)\` y devuelve una lista de piezas.
+- Una validación implementa \`validar(piezas, palabra_original)\`. Devuelve \`None\` si la palabra cumple la regla o un mensaje de error si no la cumple.
 
-### Plantilla de transformación
+Las transformaciones se aplican primero y las validaciones después. Dentro de cada fase, las reglas se ejecutan por orden numérico ascendente. Si una validación falla, esa palabra no se registra en el diccionario.
 
-```python
-# REGLA: describe aquí lo que hace.
+## 6. Desafío recomendado
 
-ACTIVA = True
-TIPO = "transformacion"
-ORDEN = 40
+Al elegir una regla, el estudiante debe:
 
-# Parámetros propios de esta regla.
-SUFIJO = "yu"
+1. Explicar la condición o transformación con sus propias palabras.
+2. Identificar qué variable necesita leer o modificar.
+3. Implementar la lógica sin alterar el menú ni el diccionario.
+4. Probar al menos un ejemplo que cumpla y otro que falle.
+5. Comprobar si otra regla activa cambia el resultado o hace que su regla pierda sentido.
 
-
-def aplicar(piezas, palabra_original):
-    # Devuelve una nueva lista de piezas.
-    return piezas + [SUFIJO]
-```
-
-### Plantilla de validación
-
-```python
-# REGLA: describe aquí la condición que comprueba.
-
-ACTIVA = True
-TIPO = "validacion"
-ORDEN = 40
-
-
-def validar(piezas, palabra_original):
-    # Añade aquí la condición que quieras comprobar.
-    # Ejemplo:
-    # if "x" not in "".join(piezas):
-    #     return "La palabra debe contener x."
-    return None
-```
-
-La plantilla inicial no rechaza ninguna palabra. Descomenta y adapta el ejemplo cuando tengas clara la condición que quieres validar.
-
-## 5. ¿Cómo funciona el orden?
-
-- El traductor ejecuta primero todas las reglas con `TIPO = "transformacion"`, ordenadas por `ORDEN` de menor a mayor.
-- Después ejecuta las reglas con `TIPO = "validacion"`, también de menor a mayor.
-- Si una validación devuelve un mensaje de error, la palabra se rechaza y no se guarda.
-- Puedes usar números como `10`, `20`, `30` y dejar intervalos para insertar reglas entre ellas. El orden solo organiza las reglas de una misma fase: las transformaciones siempre preceden a las validaciones.
-
-**Importante:** algunas reglas se contradicen si se activan juntas. Por ejemplo, exigir un número y prohibir números, exigir exactamente tres piezas y exigir una cantidad par, o prohibir repeticiones y exigir piezas repetidas. El estudiante debe decidir qué reglas forman parte de su idioma y probar el conjunto completo.
+Algunas reglas pueden entrar en conflicto. Por ejemplo, exigir números y prohibirlos a la vez, exigir exactamente tres piezas y una cantidad par, o prohibir repeticiones y exigir una pieza repetida. El grupo debe elegir las reglas que definan su idioma y justificar la combinación.
