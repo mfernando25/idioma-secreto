@@ -6,6 +6,7 @@ No necesitas editar este archivo ni el menú.
 
 import importlib
 import pkgutil
+import re
 
 import reglas
 from alfabeto import ALFABETO, normalizar_letra
@@ -64,21 +65,19 @@ def descubrir_reglas():
 
 
 def convertir_a_piezas(palabra):
-    """Convierte las letras originales en las piezas de nuestro alfabeto."""
+    """Convierte letras y caracteres configurados en sus piezas secretas."""
     piezas = []
 
-    for letra in palabra:
-        if not letra.isalpha():
-            return None, (
-                "escribe una sola palabra usando letras, sin espacios, "
-                "números ni signos de puntuación."
-            )
+    for caracter in palabra:
+        if caracter.isspace():
+            return None, "escribe una sola palabra o secuencia, sin espacios."
 
-        letra_normalizada = normalizar_letra(letra)
-        if letra_normalizada not in ALFABETO:
-            return None, f"no hay una equivalencia definida para '{letra}'."
+        # Las letras se normalizan; los signos se buscan tal como aparecen.
+        clave = normalizar_letra(caracter) if caracter.isalpha() else caracter
+        if clave not in ALFABETO:
+            return None, f"no hay una equivalencia definida para '{caracter}'."
 
-        piezas.append(ALFABETO[letra_normalizada])
+        piezas.append(ALFABETO[clave])
 
     return piezas, None
 
@@ -130,18 +129,36 @@ def traducir_palabra(palabra):
 
 
 def traducir_frase(frase):
-    """Traduce cada palabra; conserva espacios y signos de puntuación."""
-    import re
-
+    """Traduce palabras y signos configurados; conserva espacios y otros signos."""
     errores = []
     patron_palabras = r"[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]+"
+    signos_configurados = {
+        caracter: pieza
+        for caracter, pieza in ALFABETO.items()
+        if len(caracter) == 1 and not caracter.isalpha()
+    }
 
-    def reemplazar_palabra(coincidencia):
-        original = coincidencia.group(0)
-        traduccion, error = traducir_palabra(original)
-        if error:
-            errores.append((original, error))
-            return original
-        return traduccion
+    # Se separan las palabras para aplicarles las reglas. Los demás caracteres
+    # se procesan por separado, de modo que la puntuación no reciba reglas
+    # diseñadas para palabras.
+    segmentos = re.split(f"({patron_palabras})", frase)
+    partes_traducidas = []
 
-    return re.sub(patron_palabras, reemplazar_palabra, frase), errores
+    for segmento in segmentos:
+        if not segmento:
+            continue
+
+        if re.fullmatch(patron_palabras, segmento):
+            traduccion, error = traducir_palabra(segmento)
+            if error:
+                errores.append((segmento, error))
+                partes_traducidas.append(segmento)
+            else:
+                partes_traducidas.append(traduccion)
+        else:
+            partes_traducidas.append(
+                "".join(signos_configurados.get(caracter, caracter)
+                        for caracter in segmento)
+            )
+
+    return "".join(partes_traducidas), errores
