@@ -1,7 +1,7 @@
-"""Equivalencias editables del alfabeto original al idioma secreto."""
+"""Equivalencias editables de letras y signos a piezas del idioma secreto."""
 
-# Cada letra se convierte en una pieza (símbolo, sílaba o combinación).
-# Los estudiantes pueden cambiar estos valores para crear su propio alfabeto.
+# Cada clave representa un carácter original y cada valor, una pieza secreta.
+# Puedes cambiar las equivalencias o añadir otros signos de puntuación.
 ALFABETO = {
     "A": "ka",
     "B": "zu",
@@ -30,6 +30,15 @@ ALFABETO = {
     "X": "xe",
     "Y": "do",
     "Z": "z",  # La regla de reemplazo convierte esta pieza en 0.
+
+    # Signos de puntuación: se convierten en frases, pero no reciben
+    # las reglas que están diseñadas para transformar o validar palabras.
+    "¿": "in",
+    "?": "chi",
+    "¡": "ex",
+    "!": "pla",
+    ".": "fin",
+    ",": "kom",
 }
 
 
